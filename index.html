@@ -245,7 +245,7 @@
 
         <h2>当前状态</h2>
         <div class="status-box">
-            <div><span class="server-name">c6g-large-clawdbot</span> <span class="tree-line">(18.188.100.16)</span></div>
+            <div><span class="server-name">c6g-large-clawdbot</span> <span class="tree-line">(3.140.154.43)</span></div>
             <div><span class="tree-line">├──</span> clawdbot 2026.1.24-3 <span class="status-ok">运行中</span></div>
             <div><span class="tree-line">├──</span> Gateway 端口: 18789</div>
             <div><span class="tree-line">└──</span> Channels:</div>
@@ -317,7 +317,7 @@
         <div class="step-card">
             <h3><span class="step-number">6</span> 在 EC2 上添加 Slack channel</h3>
             <pre><code><span class="comment"># SSH 连接到服务器</span>
-ssh -i ~/.ssh/id_ed25519_target ec2-user@18.188.100.16
+ssh -i ~/.ssh/id_ed25519_target ec2-user@3.140.154.43
 
 <span class="comment"># 添加 Slack channel</span>
 <span class="command-highlight">clawdbot channels add</span> \

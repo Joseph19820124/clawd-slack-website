@@ -7,7 +7,7 @@
 ## 当前状态
 
 ```
-c6g-large-clawdbot (18.188.100.16)
+c6g-large-clawdbot (3.140.154.43)
 ├── clawdbot 2026.1.24-3 运行中
 ├── Gateway 端口: 18789
 └── Channels:
@@ -72,7 +72,7 @@ OAuth & Permissions → Install to Workspace
 ### 6. 在 EC2 上添加 Slack channel
 
 ```bash
-ssh -i ~/.ssh/id_ed25519_target ec2-user@18.188.100.16
+ssh -i ~/.ssh/id_ed25519_target ec2-user@3.140.154.43
 
 clawdbot channels add \
   --channel slack \

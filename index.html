@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clawdbot Slack 接入指南</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-code: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--accent-green);
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(74, 222, 128, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1rem;
+            color: var(--accent);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .status-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .status-box .server-name {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .status-box .tree-line {
+            color: var(--text-secondary);
+        }
+
+        .status-box .status-ok {
+            color: var(--accent-green);
+        }
+
+        .status-box .status-pending {
+            color: var(--accent-red);
+        }
+
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+        }
+
+        code {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            background: var(--bg-code);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #f472b6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        .command-highlight {
+            color: var(--accent-green);
+        }
+
+        .comment {
+            color: var(--text-secondary);
+        }
+
+        ol, ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .step-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .step-card h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            background: var(--accent);
+            color: var(--bg-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .quick-command {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(167, 139, 250, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .quick-command h2 {
+            border: none;
+            margin-top: 0;
+            padding-bottom: 0;
+        }
+
+        .permissions-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .permission-item {
+            background: var(--bg-code);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #f472b6;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(74, 158, 255, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .cta-box p {
+            font-size: 1.1rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clawdbot Slack 接入指南</h1>
+
+        <div class="subtitle">
+            好消息！clawdbot 原生支持 Slack，不需要重新部署。
+        </div>
+
+        <h2>当前状态</h2>
+        <div class="status-box">
+            <div><span class="server-name">c6g-large-clawdbot</span> <span class="tree-line">(18.188.100.16)</span></div>
+            <div><span class="tree-line">├──</span> clawdbot 2026.1.24-3 <span class="status-ok">运行中</span></div>
+            <div><span class="tree-line">├──</span> Gateway 端口: 18789</div>
+            <div><span class="tree-line">└──</span> Channels:</div>
+            <div><span class="tree-line">    ├──</span> Telegram <span class="status-ok">✅ 已配置</span> (@Josephclawdbot)</div>
+            <div><span class="tree-line">    └──</span> Slack <span class="status-pending">❌ 未配置</span> (原生支持)</div>
+        </div>
+
+        <div class="quick-command">
+            <h2>添加 Slack 只需一条命令</h2>
+            <pre><code><span class="command-highlight">clawdbot channels add</span> \
+  --channel slack \
+  --bot-token xoxb-xxxxx \
+  --app-token xapp-xxxxx</code></pre>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>接入步骤</h2>
+
+        <div class="step-card">
+            <h3><span class="step-number">1</span> 创建 Slack App（在 Slack 网站操作）</h3>
+            <ol>
+                <li>访问 <a href="https://api.slack.com/apps" target="_blank">https://api.slack.com/apps</a></li>
+                <li>点击 <strong>Create New App</strong> → <strong>From scratch</strong></li>
+                <li>输入 App 名称（如 Moltbot），选择 Workspace</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">2</span> 配置 App 权限</h3>
+            <p><strong>OAuth & Permissions</strong> → <strong>Bot Token Scopes</strong> 添加：</p>
+            <div class="permissions-list">
+                <div class="permission-item">app_mentions:read</div>
+                <div class="permission-item">chat:write</div>
+                <div class="permission-item">channels:history</div>
+                <div class="permission-item">im:history</div>
+                <div class="permission-item">im:write</div>
+                <div class="permission-item">users:read</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">3</span> 启用 Socket Mode</h3>
+            <p><strong>Settings</strong> → <strong>Socket Mode</strong> → <strong>Enable</strong></p>
+            <ul>
+                <li>创建 App-Level Token，选择 <code>connections:write</code> scope</li>
+                <li>获得 <code>xapp-...</code> token</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">4</span> 启用 Event Subscriptions</h3>
+            <p><strong>Features</strong> → <strong>Event Subscriptions</strong> → <strong>Enable</strong></p>
+            <p style="margin-top: 0.75rem;">Subscribe to bot events:</p>
+            <ul>
+                <li><code>app_mention</code></li>
+                <li><code>message.im</code></li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">5</span> 安装 App 到 Workspace</h3>
+            <p><strong>OAuth & Permissions</strong> → <strong>Install to Workspace</strong></p>
+            <ul>
+                <li>获得 <code>xoxb-...</code> Bot Token</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">6</span> 在 EC2 上添加 Slack channel</h3>
+            <pre><code><span class="comment"># SSH 连接到服务器</span>
+ssh -i ~/.ssh/id_ed25519_target ec2-user@18.188.100.16
+
+<span class="comment"># 添加 Slack channel</span>
+<span class="command-highlight">clawdbot channels add</span> \
+  --channel slack \
+  --bot-token "xoxb-你的bot-token" \
+  --app-token "xapp-你的app-token"
+
+<span class="comment"># 重启 gateway 使配置生效</span>
+<span class="command-highlight">clawdbot gateway restart</span></code></pre>
+        </div>
+
+        <div class="step-card">
+            <h3><span class="step-number">7</span> 验证</h3>
+            <pre><code><span class="command-highlight">clawdbot channels list</span>
+<span class="command-highlight">clawdbot channels status</span></code></pre>
+        </div>
+
+        <div class="cta-box">
+            <p>完成 Step 1-5 获取两个 token 后，即可执行 Step 6 添加 Slack 支持！</p>
+        </div>
+
+        <footer>
+            <p>Clawdbot - Multi-Channel AI Assistant</p>
+        </footer>
+    </div>
+</body>
+</html>

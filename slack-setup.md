@@ -12,7 +12,7 @@ c6g-large-clawdbot (18.188.100.16)
 ├── Gateway 端口: 18789
 └── Channels:
     ├── Telegram ✅ 已配置 (@Josephclawdbot)
-    └── Slack ❌ 未配置 (原生支持)
+    └── Slack ✅ 已配置
 ```
 
 ---

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustG - 专业服务器托管服务</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-code: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-orange: #fb923c;
+            --accent-purple: #a78bfa;
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(74, 222, 128, 0.15);
+            color: var(--accent-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1rem;
+            color: var(--accent);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .service-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: ">";
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(167, 139, 250, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .spec-item {
+            background: var(--bg-code);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .spec-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spec-value {
+            color: var(--accent-green);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+        }
+
+        .info-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-section h3 {
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .link-list li:last-child {
+            border-bottom: none;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-purple);
+            text-decoration: underline;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(74, 158, 255, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+        }
+
+        .cta-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(74, 158, 255, 0.3);
+            text-decoration: none;
+        }
+
+        .note-box {
+            background: rgba(251, 146, 60, 0.1);
+            border: 1px solid var(--accent-orange);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .note-box strong {
+            color: var(--accent-orange);
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JustG</h1>
+            <p class="tagline">Sun Network Company Limited - 专业服务器托管与云服务</p>
+            <span class="status-badge">7+ 年行业经验</span>
+        </header>
+
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-number">13,000+</div>
+                <div class="stat-label">成功项目</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">满意客户</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">99.996%</div>
+                <div class="stat-label">年度正常运行时间</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">全天候支持</div>
+            </div>
+        </div>
+
+        <h2>核心服务</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">VPS</div>
+                <h3>VPS 云服务器</h3>
+                <p>在日本部署高性能 VPS，基于全球低延迟网络，配备强大硬件和虚拟化技术。</p>
+                <ul class="feature-list">
+                    <li>快速部署与弹性扩展</li>
+                    <li>高弹性全球网络</li>
+                    <li>强大的硬件支持</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">SVR</div>
+                <h3>专用服务器</h3>
+                <p>AMD 和 Intel 处理器可选，即时开通，灵活选择 RAM、硬盘及附加服务。</p>
+                <ul class="feature-list">
+                    <li>多种处理器选择</li>
+                    <li>即时开通服务</li>
+                    <li>竞争力价格</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">DC</div>
+                <h3>数据中心托管</h3>
+                <p>Tier3 认证数据中心，提供从 1U 到多机架的托管方案，接入一级全球 IP 网络。</p>
+                <ul class="feature-list">
+                    <li>1U 到多机架方案</li>
+                    <li>Tier 1 全球 IP 网络</li>
+                    <li>现代环保机房</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>CN2 GIA 高质量网络</h3>
+            <p>提供连接中国、欧洲和非洲的 CN2 GIA 线路，Tier3 认证数据中心具备高达 1000Gbps 的 DDoS 流量清洗能力。</p>
+            <div class="tech-specs">
+                <div class="spec-item">
+                    <div class="spec-label">DDoS 防护</div>
+                    <div class="spec-value">1000 Gbps</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">数据中心等级</div>
+                    <div class="spec-value">Tier 3</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">NOC 监控</div>
+                    <div class="spec-value">24/7/365</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">网络覆盖</div>
+                    <div class="spec-value">全球</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>企业优势</h2>
+        <div class="info-section">
+            <h3>为什么选择 JustG?</h3>
+            <ul class="feature-list">
+                <li>安全与业务连续性优先，年正常运行时间高达 99.996%</li>
+                <li>网络运营中心 (NOC) 全天候 24/7/365 监控</li>
+                <li>现代化环保服务器机房设计</li>
+                <li>自成立以来，卓越客户服务一直是核心价值</li>
+                <li>提供一般咨询和紧急情况全时段支持</li>
+            </ul>
+        </div>
+
+        <div class="note-box">
+            <strong>访问提示：</strong> justg.com 官网可能对部分地区存在访问限制 (HTTP 403)。如需访问，建议尝试不同网络环境或直接联系客服获取帮助。
+        </div>
+
+        <h2>相关链接</h2>
+        <div class="info-section">
+            <ul class="link-list">
+                <li><a href="https://justg.com/" target="_blank">JustG 官网</a> - 主要服务入口</li>
+                <li><a href="https://www.justg.com/page/about/" target="_blank">关于我们</a> - Sun Network Company Limited 公司介绍</li>
+                <li><a href="https://www.crunchbase.com/organization/justg" target="_blank">Crunchbase</a> - 公司资料与融资信息</li>
+            </ul>
+        </div>
+
+        <div class="cta-section">
+            <h3>开始使用 JustG 服务</h3>
+            <p>高性能 VPS、专用服务器、数据中心托管 - 一站式解决方案</p>
+            <a href="https://justg.com/" class="cta-button" target="_blank">访问官网</a>
+        </div>
+
+        <footer>
+            <p>本页面基于公开信息整理 | 更新时间：2026-02-04</p>
+            <p style="margin-top: 0.5rem;"><a href="index.html">返回 Clawdbot 指南</a></p>
+        </footer>
+    </div>
+</body>
+</html>
